@@ -37,3 +37,11 @@ albumBtn.addEventListener("click", () => {
 });
 
 loadAlbums();
+
+window.openAlbum = function(name) {
+
+    localStorage.setItem("currentAlbum", name);
+
+    window.location.href = "album.html";
+
+}
