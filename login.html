@@ -1,20 +1,149 @@
 <!DOCTYPE html>
-<html>
+
+<html lang="en">
+
 <head>
-<title>Login</title>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Login - My Family Memories</title>
+
+<style>
+
+*{
+
+margin:0;
+
+padding:0;
+
+box-sizing:border-box;
+
+font-family:Arial,sans-serif;
+
+}
+
+body{
+
+height:100vh;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+background:linear-gradient(135deg,#0f172a,#1e293b,#334155);
+
+}
+
+.login-box{
+
+width:90%;
+
+max-width:400px;
+
+background:white;
+
+padding:30px;
+
+border-radius:18px;
+
+box-shadow:0 10px 30px rgba(0,0,0,.3);
+
+}
+
+h2{
+
+text-align:center;
+
+margin-bottom:25px;
+
+}
+
+input{
+
+width:100%;
+
+padding:14px;
+
+margin-bottom:15px;
+
+border:1px solid #ccc;
+
+border-radius:10px;
+
+font-size:16px;
+
+}
+
+button{
+
+width:100%;
+
+padding:15px;
+
+background:#2563eb;
+
+color:white;
+
+border:none;
+
+border-radius:10px;
+
+font-size:17px;
+
+cursor:pointer;
+
+}
+
+button:hover{
+
+background:#1d4ed8;
+
+}
+
+.note{
+
+margin-top:20px;
+
+font-size:14px;
+
+text-align:center;
+
+color:#666;
+
+}
+
+</style>
+
 </head>
 
-<body style="background:black;color:white;text-align:center;padding-top:100px;">
+<body>
 
-<h1>Family Login</h1>
+<div class="login-box">
 
-<input type="text" placeholder="Username"><br><br>
+<h2>Family Login</h2>
 
-<input type="password" placeholder="Password"><br><br>
+<input type="text" placeholder="Username">
 
-<a href="index.html">
-<button>Back Home</button>
-</a>
+<input type="password" placeholder="Password">
+
+<button onclick="alert('Firebase Login Next Step')">
+
+Login
+
+</button>
+
+<div class="note">
+
+My Family Memories
+
+</div>
+
+</div>
 
 </body>
+
 </html>
