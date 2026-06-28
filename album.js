@@ -1,3 +1,5 @@
+alert("album.js loaded");
+
 const albumBtn = document.querySelector(".album");
 const albumList = document.getElementById("albumList");
 
