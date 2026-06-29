@@ -14,117 +14,117 @@
 
 body{
 
-font-family:Arial,sans-serif;
+    font-family:Arial,sans-serif;
 
-background:#eef3f8;
+    background:#eef3f8;
 
-margin:0;
+    margin:0;
 
-padding:20px;
+    padding:20px;
 
 }
 
 .card{
 
-background:white;
+    background:white;
 
-padding:20px;
+    padding:20px;
 
-border-radius:15px;
+    border-radius:15px;
 
-box-shadow:0 5px 15px rgba(0,0,0,.1);
+    box-shadow:0 5px 15px rgba(0,0,0,.1);
 
 }
 
 h1{
 
-margin-bottom:20px;
+    margin-bottom:20px;
 
 }
 
 button{
 
-width:100%;
+    width:100%;
 
-padding:15px;
+    padding:15px;
 
-margin-top:15px;
+    margin-top:15px;
 
-border:none;
+    border:none;
 
-border-radius:10px;
+    border-radius:10px;
 
-font-size:16px;
+    font-size:16px;
 
-font-weight:bold;
+    font-weight:bold;
 
-cursor:pointer;
+    cursor:pointer;
 
 }
 
 .upload{
 
-background:#f59e0b;
+    background:#f59e0b;
 
-color:white;
+    color:white;
 
 }
 
 .back{
 
-background:#374151;
+    background:#374151;
 
-color:white;
+    color:white;
 
 }
 
 #photos{
 
-margin-top:20px;
+    margin-top:20px;
 
-display:flex;
+    display:flex;
 
-flex-wrap:wrap;
+    flex-wrap:wrap;
 
-gap:15px;
+    gap:15px;
 
 }
 
 .photoBox{
 
-width:160px;
+    width:160px;
 
-text-align:center;
+    text-align:center;
 
 }
 
 .photoBox img{
 
-width:100%;
+    width:100%;
 
-border-radius:12px;
+    border-radius:12px;
 
-display:block;
+    display:block;
 
 }
 
 .deleteBtn{
 
-margin-top:8px;
+    margin-top:8px;
 
-background:#ef4444;
+    background:#ef4444;
 
-color:white;
+    color:white;
 
-padding:10px;
+    padding:10px;
 
-border:none;
+    border:none;
 
-border-radius:8px;
+    border-radius:8px;
 
-cursor:pointer;
+    cursor:pointer;
 
-width:100%;
+    width:100%;
 
 }
 
@@ -145,7 +145,9 @@ type="file"
 id="photoInput"
 
 accept="image/*"
+
 multiple
+
 style="display:none;"
 
 >
@@ -154,9 +156,7 @@ style="display:none;"
 
 class="upload"
 
-onclick="document.getElementById('photoInput').click()"
-
->
+onclick="document.getElementById('photoInput').click()">
 
 📸 Upload Photo
 
@@ -166,9 +166,7 @@ onclick="document.getElementById('photoInput').click()"
 
 class="back"
 
-onclick="location.href='dashboard.html'"
-
->
+onclick="location.href='dashboard.html'">
 
 ⬅ Back to Dashboard
 
@@ -186,65 +184,67 @@ onclick="location.href='dashboard.html'"
 
 const album = localStorage.getItem("currentAlbum");
 
-document.getElementById("albumTitle").innerHTML =
-
-"📁 " + album;
+document.getElementById("albumTitle").innerHTML = "📁 " + album;
 
 const photoInput = document.getElementById("photoInput");
 
-photoInput.addEventListener("change",function(e){
+photoInput.addEventListener("change", function(e){
 
-const file = e.target.files[0];
+    const files = e.target.files;
 
-if(!file) return;
+    if(files.length === 0) return;
 
-const reader = new FileReader();
+    const photos = document.getElementById("photos");
 
-reader.onload = function(event){
+    if(photos.innerHTML.includes("No photos yet")){
 
-const photos = document.getElementById("photos");
+        photos.innerHTML = "";
 
-if(photos.innerHTML.includes("No photos yet")){
+    }
 
-photos.innerHTML="";
+    for(const file of files){
 
-}
+        const reader = new FileReader();
 
-const box = document.createElement("div");
+        reader.onload = function(event){
 
-box.className="photoBox";
+            const box = document.createElement("div");
 
-const img = document.createElement("img");
+            box.className = "photoBox";
 
-img.src = event.target.result;
+            const img = document.createElement("img");
 
-const delBtn = document.createElement("button");
+            img.src = event.target.result;
 
-delBtn.className="deleteBtn";
+            const delBtn = document.createElement("button");
 
-delBtn.innerHTML="🗑 Delete";
+            delBtn.className = "deleteBtn";
 
-delBtn.onclick=function(){
+            delBtn.innerHTML = "🗑 Delete";
 
-box.remove();
+            delBtn.onclick = function(){
 
-if(photos.children.length===0){
+                box.remove();
 
-photos.innerHTML="<p>No photos yet.</p>";
+                if(photos.children.length === 0){
 
-}
+                    photos.innerHTML = "<p>No photos yet.</p>";
 
-};
+                }
 
-box.appendChild(img);
+            };
 
-box.appendChild(delBtn);
+            box.appendChild(img);
 
-photos.appendChild(box);
+            box.appendChild(delBtn);
 
-};
+            photos.appendChild(box);
 
-reader.readAsDataURL(file);
+        };
+
+        reader.readAsDataURL(file);
+
+    }
 
 });
 
@@ -253,3 +253,4 @@ reader.readAsDataURL(file);
 </body>
 
 </html>
+
