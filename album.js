@@ -97,6 +97,26 @@ loadAlbums();
 
 window.deleteAlbum = function(name){
 
+window.renameAlbum = function(name){
+
+const newName = prompt("New album name:", name);
+
+if(!newName || newName.trim()==="") return;
+
+let albums = JSON.parse(localStorage.getItem("albums")) || [];
+
+const index = albums.indexOf(name);
+
+if(index !== -1){
+    albums[index] = newName;
+}
+
+localStorage.setItem("albums", JSON.stringify(albums));
+
+loadAlbums();
+
+};
+    
 if(!confirm("Delete album '" + name + "' ?")){
 return;
 }
