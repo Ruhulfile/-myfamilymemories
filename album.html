@@ -1,183 +1,109 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Album</title>
 
 <style>
 
 body{
-
-    font-family:Arial,sans-serif;
-
-    background:#eef3f8;
-
-    margin:0;
-
-    padding:20px;
-
+font-family:Arial,sans-serif;
+background:#eef3f8;
+margin:0;
+padding:20px;
 }
 
 .card{
-
-    background:white;
-
-    padding:20px;
-
-    border-radius:15px;
-
-    box-shadow:0 5px 15px rgba(0,0,0,.1);
-
+background:white;
+padding:20px;
+border-radius:15px;
+box-shadow:0 5px 15px rgba(0,0,0,.1);
 }
 
 h1{
-
-    margin-bottom:20px;
-
+margin-bottom:20px;
 }
 
 button{
-
-    width:100%;
-
-    padding:15px;
-
-    margin-top:15px;
-
-    border:none;
-
-    border-radius:10px;
-
-    font-size:16px;
-
-    font-weight:bold;
-
-    cursor:pointer;
-
+width:100%;
+padding:15px;
+margin-top:15px;
+border:none;
+border-radius:10px;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
 }
 
 .upload{
-
-    background:#f59e0b;
-
-    color:white;
-
+background:#f59e0b;
+color:white;
 }
 
 .back{
-
-    background:#374151;
-
-    color:white;
-
+background:#374151;
+color:white;
 }
 
 #photos{
-
-    margin-top:20px;
-
-    display:flex;
-
-    flex-wrap:wrap;
-
-    gap:15px;
-
+margin-top:20px;
+display:flex;
+flex-wrap:wrap;
+gap:15px;
 }
 
 .photoBox{
-
-    width:160px;
-
-    text-align:center;
-
+width:160px;
+text-align:center;
 }
 
 .photoBox img{
-
-    width:100%;
-
-    border-radius:12px;
-
-    display:block;
-
+width:100%;
+border-radius:12px;
+display:block;
+cursor:pointer;
 }
 
 .deleteBtn{
-
-    margin-top:8px;
-
-    background:#ef4444;
-
-    color:white;
-
-    padding:10px;
-
-    border:none;
-
-    border-radius:8px;
-
-    cursor:pointer;
-
-    width:100%;
-
+margin-top:8px;
+background:#ef4444;
+color:white;
+padding:10px;
+border:none;
+border-radius:8px;
+width:100%;
+cursor:pointer;
 }
 
 #viewer{
-
 display:none;
-
 position:fixed;
-
 top:0;
-
 left:0;
-
 width:100%;
-
 height:100%;
-
 background:rgba(0,0,0,.9);
-
 justify-content:center;
-
 align-items:center;
-
 z-index:9999;
-
 }
 
 #viewer img{
-
 max-width:95%;
-
 max-height:90%;
-
 border-radius:12px;
-
 }
 
 #closeViewer{
-
 position:absolute;
-
 top:20px;
-
 right:25px;
-
 font-size:40px;
-
-color:#fff;
-
+color:white;
 cursor:pointer;
-
 }
-    
+
 </style>
 
 </head>
@@ -189,112 +115,83 @@ cursor:pointer;
 <h1 id="albumTitle"></h1>
 
 <input
-
 type="file"
-
 id="photoInput"
-
 accept="image/*"
-
 multiple
-
 style="display:none;"
-
 >
 
-<button
-
-class="upload"
-
+<button class="upload"
 onclick="document.getElementById('photoInput').click()">
-
 📸 Upload Photo
-
 </button>
 
-<button
-
-class="back"
-
+<button class="back"
 onclick="location.href='dashboard.html'">
-
 ⬅ Back to Dashboard
-
 </button>
 
 <div id="photos">
-
 <p>No photos yet.</p>
+</div>
 
 </div>
 
+<div id="viewer">
+<span id="closeViewer">&times;</span>
+<img id="viewerImg">
 </div>
 
 <script>
-
 const album = localStorage.getItem("currentAlbum");
-
-document.getElementById("albumTitle").innerHTML = "📁 " + album;
-
-const photoInput = document.getElementById("photoInput");
+document.getElementById("albumTitle").innerHTML="📁 "+album;
+}
 
 photoInput.addEventListener("change", function(e){
 
     const files = e.target.files;
 
-    if(files.length === 0) return;
-
-    const photos = document.getElementById("photos");
+    if(files.length===0) return;
 
     if(photos.innerHTML.includes("No photos yet")){
-
-        photos.innerHTML = "";
-
+        photos.innerHTML="";
     }
 
     for(const file of files){
 
-        const reader = new FileReader();
+        const reader=new FileReader();
 
-        reader.onload = function(event){
+        reader.onload=function(event){
 
-            const box = document.createElement("div");
+            const box=document.createElement("div");
+            box.className="photoBox";
 
-            box.className = "photoBox";
+            const img=document.createElement("img");
+            img.src=event.target.result;
+            img.style.cursor="pointer";
 
-            const img = document.createElement("img");
+            img.onclick=function(){
+                document.getElementById("viewer").style.display="flex";
+                document.getElementById("viewerImg").src=this.src;
+            };
 
-            img.src = event.target.result;
-            img.style.cursor = "pointer";
+            const delBtn=document.createElement("button");
+            delBtn.className="deleteBtn";
+            delBtn.innerHTML="🗑 Delete";
 
-img.onclick = function(){
-
-    document.getElementById("viewer").style.display = "flex";
-    document.getElementById("viewerImg").src = this.src;
-     
-};
-
-const delBtn = document.createElement("button");
-            delBtn.className = "deleteBtn";
-
-            delBtn.innerHTML = "🗑 Delete";
-
-            delBtn.onclick = function(){
+            delBtn.onclick=function(){
 
                 box.remove();
 
-                if(photos.children.length === 0){
-
-                    photos.innerHTML = "<p>No photos yet.</p>";
-
+                if(photos.children.length===0){
+                    photos.innerHTML="<p>No photos yet.</p>";
                 }
 
             };
 
             box.appendChild(img);
-
             box.appendChild(delBtn);
-
             photos.appendChild(box);
 
         };
@@ -305,17 +202,18 @@ const delBtn = document.createElement("button");
 
 });
 
+document.getElementById("closeViewer").onclick=function(){
+    document.getElementById("viewer").style.display="none";
+};
+
+document.getElementById("viewer").onclick=function(e){
+    if(e.target.id==="viewer"){
+        this.style.display="none";
+    }
+};
+
 </script>
 
-<div id="viewer">
-
-    <span id="closeViewer">&times;</span>
-
-    <img id="viewerImg">
-
-</div>
-    
 </body>
-
 </html>
-
+``
