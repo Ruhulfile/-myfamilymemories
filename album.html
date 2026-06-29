@@ -270,11 +270,11 @@ photoInput.addEventListener("change", function(e){
 img.onclick = function(){
 
     document.getElementById("viewer").style.display = "flex";
-
     document.getElementById("viewerImg").src = this.src;
+     
+};
 
-            const delBtn = document.createElement("button");
-
+const delBtn = document.createElement("button");
             delBtn.className = "deleteBtn";
 
             delBtn.innerHTML = "🗑 Delete";
