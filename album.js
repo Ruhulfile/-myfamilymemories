@@ -1,15 +1,11 @@
 // ===============================
-
 // My Family Memories - Album System v2
-
 // ===============================
 
 const albumBtn = document.querySelector(".album");
-
 const albumList = document.getElementById("albumList");
 
 // Album Load
-
 function loadAlbums() {
 
     if (!albumList) return;
@@ -21,38 +17,38 @@ function loadAlbums() {
     albums.forEach((name) => {
 
         const card = document.createElement("div");
-
         card.className = "card";
 
-card.innerHTML = `
-<h3>📁 ${name}</h3>
+        card.innerHTML = `
+        <h3>📁 ${name}</h3>
 
-<p>📷 0 Photos</p>
+        <p>📷 0 Photos</p>
 
-<button onclick="openAlbum('${name}')">
-📂 Open Album
-</button>
+        <button onclick="openAlbum('${name}')">
+        📂 Open Album
+        </button>
 
-<button
-style="
-margin-top:8px;
-background:#3b82f6;
-color:white;
-"
-onclick="renameAlbum('${name}')">
-✏️ Rename Album
-</button>
+        <button
+        style="
+        margin-top:8px;
+        background:#3b82f6;
+        color:white;
+        "
+        onclick="renameAlbum('${name}')">
+        ✏️ Rename Album
+        </button>
 
-<button
-style="
-margin-top:8px;
-background:#ef4444;
-color:white;
-"
-onclick="deleteAlbum('${name}')">
-🗑 Delete Album
-</button>
-`;
+        <button
+        style="
+        margin-top:8px;
+        background:#ef4444;
+        color:white;
+        "
+        onclick="deleteAlbum('${name}')">
+        🗑 Delete Album
+        </button>
+        `;
+
         albumList.appendChild(card);
 
     });
@@ -60,7 +56,6 @@ onclick="deleteAlbum('${name}')">
 }
 
 // Create Album
-
 if (albumBtn) {
 
     albumBtn.addEventListener("click", () => {
@@ -82,7 +77,6 @@ if (albumBtn) {
 }
 
 // Open Album
-
 window.openAlbum = function(name) {
 
     localStorage.setItem("currentAlbum", name);
@@ -91,42 +85,44 @@ window.openAlbum = function(name) {
 
 };
 
-// Page Load
-
-loadAlbums();
-
-window.deleteAlbum = function(name){
-
+// Rename Album
 window.renameAlbum = function(name){
 
-const newName = prompt("New album name:", name);
+    const newName = prompt("New album name:", name);
 
-if(!newName || newName.trim()==="") return;
+    if(!newName || newName.trim()==="") return;
 
-let albums = JSON.parse(localStorage.getItem("albums")) || [];
+    let albums = JSON.parse(localStorage.getItem("albums")) || [];
 
-const index = albums.indexOf(name);
+    const index = albums.indexOf(name);
 
-if(index !== -1){
-    albums[index] = newName;
-}
+    if(index !== -1){
+        albums[index] = newName;
+    }
 
-localStorage.setItem("albums", JSON.stringify(albums));
+    localStorage.setItem("albums", JSON.stringify(albums));
 
-loadAlbums();
-
-};
-    
-if(!confirm("Delete album '" + name + "' ?")){
-return;
-}
-
-let albums = JSON.parse(localStorage.getItem("albums")) || [];
-
-albums = albums.filter(a => a !== name);
-
-localStorage.setItem("albums", JSON.stringify(albums));
-
-loadAlbums();
+    loadAlbums();
 
 };
+
+// Delete Album
+window.deleteAlbum = function(name){
+
+    if(!confirm("Delete album '" + name + "' ?")){
+        return;
+    }
+
+    let albums = JSON.parse(localStorage.getItem("albums")) || [];
+
+    albums = albums.filter(a => a !== name);
+
+    localStorage.setItem("albums", JSON.stringify(albums));
+
+    loadAlbums();
+
+};
+
+// Page Load
+loadAlbums();
+``
