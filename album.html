@@ -150,13 +150,41 @@ document.getElementById("photoInput").addEventListener("change", function(e){
 
         photos.innerHTML = "";
 
-        const img = document.createElement("img");
+     const box = document.createElement("div");
 
-        img.src = event.target.result;
+const img = document.createElement("img");
 
-        photos.appendChild(img);
+img.src = event.target.result;
 
-    };
+const delBtn = document.createElement("button");
+
+delBtn.innerHTML = "🗑 Delete";
+
+delBtn.style.marginTop = "8px";
+
+delBtn.style.background = "#ef4444";
+
+delBtn.style.color = "white";
+
+delBtn.style.padding = "8px";
+
+delBtn.style.border = "none";
+
+delBtn.style.borderRadius = "8px";
+
+delBtn.style.cursor = "pointer";
+
+delBtn.onclick = function(){
+
+    box.remove();
+
+};
+
+box.appendChild(img);
+
+box.appendChild(delBtn);
+
+photos.appendChild(box);
 
     reader.readAsDataURL(file);
 
