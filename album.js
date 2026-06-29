@@ -84,3 +84,19 @@ window.openAlbum = function(name) {
 // Page Load
 
 loadAlbums();
+
+window.deleteAlbum = function(name){
+
+if(!confirm("Delete album '" + name + "' ?")){
+return;
+}
+
+let albums = JSON.parse(localStorage.getItem("albums")) || [];
+
+albums = albums.filter(a => a !== name);
+
+localStorage.setItem("albums", JSON.stringify(albums));
+
+loadAlbums();
+
+};
