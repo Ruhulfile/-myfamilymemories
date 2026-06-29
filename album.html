@@ -265,6 +265,13 @@ photoInput.addEventListener("change", function(e){
             const img = document.createElement("img");
 
             img.src = event.target.result;
+            img.style.cursor = "pointer";
+
+img.onclick = function(){
+
+    document.getElementById("viewer").style.display = "flex";
+
+    document.getElementById("viewerImg").src = this.src;
 
             const delBtn = document.createElement("button");
 
