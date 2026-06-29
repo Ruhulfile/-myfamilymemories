@@ -207,6 +207,51 @@ Logout
 
 <script type="module" src="album.js"></script>
 
+<script>
+
+const wallpaperInput = document.getElementById("wallpaperInput");
+
+wallpaperInput.addEventListener("change", function(e){
+
+const file = e.target.files[0];
+
+if(!file) return;
+
+const reader = new FileReader();
+
+reader.onload = function(event){
+
+document.body.style.backgroundImage =
+"url('" + event.target.result + "')";
+
+document.body.style.backgroundSize = "cover";
+document.body.style.backgroundPosition = "center";
+
+localStorage.setItem(
+"wallpaper",
+event.target.result
+);
+
+};
+
+reader.readAsDataURL(file);
+
+});
+
+const savedWallpaper = localStorage.getItem("wallpaper");
+
+if(savedWallpaper){
+
+document.body.style.backgroundImage =
+"url('" + savedWallpaper + "')";
+
+document.body.style.backgroundSize = "cover";
+document.body.style.backgroundPosition = "center";
+
+}
+
+</script>
+  
 </body>
 
 </html>
