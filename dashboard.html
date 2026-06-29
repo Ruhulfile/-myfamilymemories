@@ -158,7 +158,16 @@ Manage your family memories safely.
 
 </p>
 
-<button class="wallpaper">
+<input
+type="file"
+id="wallpaperInput"
+accept="image/*"
+style="display:none;"
+>
+
+<button
+class="wallpaper"
+onclick="document.getElementById('wallpaperInput').click()">
 
 🖼 Change Wallpaper
 
