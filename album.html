@@ -146,9 +146,13 @@ onclick="location.href='dashboard.html'">
 <script>
 const album = localStorage.getItem("currentAlbum");
 document.getElementById("albumTitle").innerHTML="📁 "+album;
-const photoInput = document.getElementById("photoInput");
 
+const photoInput = document.getElementById("photoInput");
 const photos = document.getElementById("photos");
+
+const photoInput = document.getElementById("photoInput");
+const photos = document.getElementById("photos");
+
 photoInput.addEventListener("change", function(e){
 
     const files = e.target.files;
