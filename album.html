@@ -82,6 +82,20 @@ color:white;
 
 margin-top:20px;
 
+display:flex;
+
+flex-wrap:wrap;
+
+gap:10px;
+
+}
+
+#photos img{
+
+width:150px;
+
+border-radius:12px;
+
 }
 
 </style>
@@ -121,13 +135,33 @@ margin-top:20px;
 const album = localStorage.getItem("currentAlbum");
 
 document.getElementById("albumTitle").innerHTML = "📁 " + album;
+
 document.getElementById("photoInput").addEventListener("change", function(e){
 
     const file = e.target.files[0];
 
     if(!file) return;
 
-    alert("Photo selected: " + file.name + " 📸");
+    const reader = new FileReader();
+
+    reader.onload = function(event){
+
+        const photos = document.getElementById("photos");
+
+        photos.innerHTML = "";
+
+        const img = document.createElement("img");
+
+        img.src = event.target.result;
+
+        photos.appendChild(img);
+
+    };
+
+    reader.readAsDataURL(file);
+
+});
+
 </script>
 
 </body>
