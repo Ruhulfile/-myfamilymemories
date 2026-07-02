@@ -14,6 +14,114 @@
 
 <style>
 
+body{
+
+margin:0;
+
+padding:0;
+
+font-family:Arial,sans-serif;
+
+background:#eef3f8;
+
+}
+
+header{
+
+background:#111827;
+
+color:#fff;
+
+padding:20px;
+
+font-size:28px;
+
+font-weight:bold;
+
+text-align:center;
+
+}
+
+.container{
+
+max-width:1200px;
+
+margin:30px auto;
+
+padding:20px;
+
+}
+
+.card{
+
+background:#fff;
+
+padding:20px;
+
+border-radius:15px;
+
+box-shadow:0 8px 20px rgba(0,0,0,.12);
+
+margin-bottom:20px;
+
+}
+
+button{
+
+width:100%;
+
+padding:15px;
+
+margin-top:12px;
+
+border:none;
+
+border-radius:10px;
+
+font-size:16px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+}
+
+.wallpaper{
+
+background:#8b5cf6;
+
+color:#fff;
+
+}
+
+.album{
+
+background:#2563eb;
+
+color:#fff;
+
+}
+
+.logout{
+
+background:#ef4444;
+
+color:#fff;
+
+}
+
+#albumList{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+
+gap:20px;
+
+margin-top:20px;
+
+}
+
 </style>
 
 </head>
@@ -32,21 +140,22 @@ My Family Memories
 
 <h2>Welcome Admin 👋</h2>
 
-<p>
-
-Manage your family memories safely.
-
-</p>
+<p>Manage your family memories safely.</p>
 
 <input
+
 type="file"
+
 id="wallpaperInput"
+
 accept="image/*"
-style="display:none;"
->
+
+style="display:none;">
 
 <button
+
 class="wallpaper"
+
 onclick="document.getElementById('wallpaperInput').click()">
 
 🖼 Change Wallpaper
@@ -59,19 +168,11 @@ onclick="document.getElementById('wallpaperInput').click()">
 
 </button>
 
-<button class="upload">
+<button
 
-📸 Upload Photos
+class="logout"
 
-</button>
-
-<button class="admin">
-
-👑 Admin Panel
-
-</button>
-
-<button class="logout" onclick="location.href='login.html'">
+onclick="location.href='login.html'">
 
 Logout
 
@@ -83,7 +184,7 @@ Logout
 
 </div>
 
-<script type="module" src="album.js"></script>
+<script type="module" src="app.js"></script>
 
 <script>
 
@@ -99,18 +200,23 @@ const reader = new FileReader();
 
 reader.onload = function(event){
 
-alert("Wallpaper loaded successfully!");
-  
 document.body.style.backgroundImage =
+
 "url('" + event.target.result + "')";
 
 document.body.style.backgroundSize = "cover";
+
 document.body.style.backgroundPosition = "center";
 
 localStorage.setItem(
+
 "wallpaper",
+
 event.target.result
+
 );
+
+alert("Wallpaper changed successfully!");
 
 };
 
@@ -123,15 +229,17 @@ const savedWallpaper = localStorage.getItem("wallpaper");
 if(savedWallpaper){
 
 document.body.style.backgroundImage =
+
 "url('" + savedWallpaper + "')";
 
 document.body.style.backgroundSize = "cover";
+
 document.body.style.backgroundPosition = "center";
 
 }
 
 </script>
-  
+
 </body>
 
-</html>
+</html> 
