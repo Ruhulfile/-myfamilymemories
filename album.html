@@ -261,3 +261,152 @@ document.getElementById("viewer").onclick = function(e){
 };
 
 </script>
+ import {
+
+collection,
+
+addDoc,
+
+getDocs,
+
+deleteDoc,
+
+doc
+
+} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+
+const album = localStorage.getItem("currentAlbum");
+
+const albumTitle = document.getElementById("albumTitle");
+
+const photoInput = document.getElementById("photoInput");
+
+const photos = document.getElementById("photos");
+
+albumTitle.innerHTML = "📁 " + album;
+
+const photoCollection = collection(db, "albums", album, "photos");   
+photoInput.addEventListener("change", async (e) => {
+
+    const files = e.target.files;
+
+    if (!files.length) return;
+
+    for (const file of files) {
+
+        try {
+
+            // Upload to Cloudinary
+
+            const imageUrl = await uploadImage(file);
+
+            // Save in Firestore
+
+            await addDoc(photoCollection, {
+
+                image: imageUrl,
+
+                createdAt: new Date()
+
+            });
+
+        } catch (err) {
+
+            console.error(err);
+
+            alert("Photo upload failed!");
+
+        }
+
+    }
+
+    loadPhotos();
+
+});
+async function loadPhotos() {
+
+    photos.innerHTML = "";
+
+    const snapshot = await getDocs(photoCollection);
+
+    if (snapshot.empty) {
+
+        photos.innerHTML = "<p>No photos found.</p>";
+
+        return;
+
+    }
+
+    snapshot.forEach((photoDoc) => {
+
+        const data = photoDoc.data();
+
+        const box = document.createElement("div");
+
+        box.className = "photoBox";
+
+        const img = document.createElement("img");
+
+        img.src = data.image;
+
+        img.onclick = function () {
+
+            document.getElementById("viewer").style.display = "flex";
+
+            document.getElementById("viewerImg").src = data.image;
+
+        };
+
+        const delBtn = document.createElement("button");
+
+        delBtn.className = "deleteBtn";
+
+        delBtn.innerHTML = "🗑 Delete";
+
+        delBtn.onclick = async function () {
+
+            if (!confirm("Delete this photo?")) return;
+
+            await deleteDoc(doc(db, "albums", album, "photos", photoDoc.id));
+
+            loadPhotos();
+
+        };
+
+        box.appendChild(img);
+
+        box.appendChild(delBtn);
+
+        photos.appendChild(box);
+
+    });
+
+}
+
+
+
+loadPhotos();
+
+// Close Viewer
+
+document.getElementById("closeViewer").onclick = function () {
+
+    document.getElementById("viewer").style.display = "none";
+
+};
+
+document.getElementById("viewer").onclick = function (e) {
+
+    if (e.target.id === "viewer") {
+
+        this.style.display = "none";
+
+    }
+
+};
+
+</script>
+
+</body>
+
+</html>    
