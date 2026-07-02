@@ -4,21 +4,17 @@
 
 // =======================================
 
-// Cloudinary Details
+const CLOUD_NAME = "i6jigbyf";
 
-export const CLOUD_NAME = "i6jigbyf";
+const UPLOAD_PRESET = "family-memories";
 
-export const UPLOAD_PRESET = "family-memories";
+export async function uploadImage(file) {
 
-// Upload Function
+    const formData = new FormData();
 
-export async function uploadImage(file){
+    formData.append("file", file);
 
-    const data = new FormData();
-
-    data.append("file", file);
-
-    data.append("upload_preset", UPLOAD_PRESET);
+    formData.append("upload_preset", UPLOAD_PRESET);
 
     const response = await fetch(
 
@@ -26,16 +22,22 @@ export async function uploadImage(file){
 
         {
 
-            method:"POST",
+            method: "POST",
 
-            body:data
+            body: formData
 
         }
 
     );
 
-    const result = await response.json();
+    if (!response.ok) {
 
-    return result.secure_url;
+        throw new Error("Cloudinary upload failed");
+
+    }
+
+    const data = await response.json();
+
+    return data.secure_url;
 
 }
