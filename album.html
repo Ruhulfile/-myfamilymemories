@@ -1,107 +1,199 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Album</title>
+
+<title>My Family Memories - Album</title>
 
 <style>
 
-body{
-font-family:Arial,sans-serif;
-background:#eef3f8;
+*{
+
 margin:0;
+
+padding:0;
+
+box-sizing:border-box;
+
+font-family:Arial,sans-serif;
+
+}
+
+body{
+
+background:#eef3f8;
+
 padding:20px;
+
 }
 
 .card{
-background:white;
+
+max-width:1200px;
+
+margin:auto;
+
+background:#fff;
+
 padding:20px;
+
 border-radius:15px;
-box-shadow:0 5px 15px rgba(0,0,0,.1);
+
+box-shadow:0 8px 20px rgba(0,0,0,.12);
+
 }
 
 h1{
+
 margin-bottom:20px;
+
+font-size:28px;
+
 }
 
 button{
+
 width:100%;
-padding:15px;
-margin-top:15px;
+
+padding:14px;
+
+margin-top:12px;
+
 border:none;
+
 border-radius:10px;
+
 font-size:16px;
+
 font-weight:bold;
+
 cursor:pointer;
+
 }
 
 .upload{
+
 background:#f59e0b;
-color:white;
+
+color:#fff;
+
 }
 
 .back{
+
 background:#374151;
-color:white;
+
+color:#fff;
+
 }
 
 #photos{
+
 margin-top:20px;
-display:flex;
-flex-wrap:wrap;
+
+display:grid;
+
+grid-template-columns:repeat(auto-fill,minmax(170px,1fr));
+
 gap:15px;
+
 }
 
 .photoBox{
-width:160px;
-text-align:center;
+
+background:#fff;
+
+border-radius:12px;
+
+overflow:hidden;
+
+box-shadow:0 5px 15px rgba(0,0,0,.08);
+
 }
 
 .photoBox img{
+
 width:100%;
-border-radius:12px;
-display:block;
+
+height:170px;
+
+object-fit:cover;
+
 cursor:pointer;
+
+display:block;
+
 }
 
 .deleteBtn{
-margin-top:8px;
+
 background:#ef4444;
-color:white;
-padding:10px;
-border:none;
-border-radius:8px;
+
+color:#fff;
+
 width:100%;
+
+border:none;
+
+padding:10px;
+
 cursor:pointer;
+
 }
 
 #viewer{
+
 display:none;
+
 position:fixed;
-top:0;
+
 left:0;
+
+top:0;
+
 width:100%;
+
 height:100%;
+
 background:rgba(0,0,0,.9);
+
 justify-content:center;
+
 align-items:center;
+
 z-index:9999;
+
 }
 
 #viewer img{
+
 max-width:95%;
+
 max-height:90%;
+
 border-radius:12px;
+
 }
 
 #closeViewer{
+
 position:absolute;
+
 top:20px;
-right:25px;
+
+right:30px;
+
 font-size:40px;
-color:white;
+
+color:#fff;
+
 cursor:pointer;
+
 }
 
 </style>
@@ -115,153 +207,56 @@ cursor:pointer;
 <h1 id="albumTitle"></h1>
 
 <input
+
 type="file"
+
 id="photoInput"
+
 accept="image/*"
+
 multiple
-style="display:none;"
->
 
-<button class="upload"
+style="display:none;">
+
+<button
+
+class="upload"
+
 onclick="document.getElementById('photoInput').click()">
-📸 Upload Photo
+
+📸 Upload Photos
+
 </button>
 
-<button class="back"
+<button
+
+class="back"
+
 onclick="location.href='dashboard.html'">
-⬅ Back to Dashboard
+
+⬅ Back To Dashboard
+
 </button>
 
-<div id="photos">
-<p>No photos yet.</p>
-</div>
+<div id="photos"></div>
 
 </div>
 
 <div id="viewer">
+
 <span id="closeViewer">&times;</span>
+
 <img id="viewerImg">
+
 </div>
 
-<script>
-const album = localStorage.getItem("currentAlbum");
+ <script type="module">
 
-document.getElementById("albumTitle").innerHTML = "📁 " + album;
+import { db } from "./js/firebase.js";
 
-const photoInput = document.getElementById("photoInput");
+import { uploadImage } from "./js/cloudinary.js";
 
-const photos = document.getElementById("photos");
-
-// Saved photos load
-
-let savedPhotos = JSON.parse(localStorage.getItem(album)) || [];
-
-photos.innerHTML = "";
-
-savedPhotos.forEach(addPhoto);
-
-// Upload
-
-photoInput.addEventListener("change", function(e){
-
-    const files = e.target.files;
-
-    for(const file of files){
-
-        const reader = new FileReader();
-
-        reader.onload = function(event){
-
-            savedPhotos.push(event.target.result);
-
-            localStorage.setItem(album, JSON.stringify(savedPhotos));
-
-            addPhoto(event.target.result);
-
-        };
-
-        reader.readAsDataURL(file);
-
-    }
-
-});
-
-// Add Photo
-
-function addPhoto(src){
-
-    if(photos.innerHTML.includes("No photos yet")){
-
-        photos.innerHTML = "";
-
-    }
-
-    const box = document.createElement("div");
-
-    box.className = "photoBox";
-
-    const img = document.createElement("img");
-
-    img.src = src;
-
-    img.onclick = function(){
-
-        document.getElementById("viewer").style.display = "flex";
-
-        document.getElementById("viewerImg").src = src;
-
-    };
-
-    const delBtn = document.createElement("button");
-
-    delBtn.className = "deleteBtn";
-
-    delBtn.innerHTML = "🗑 Delete";
-
-    delBtn.onclick = function(){
-
-        box.remove();
-
-        savedPhotos = savedPhotos.filter(photo => photo !== src);
-
-        localStorage.setItem(album, JSON.stringify(savedPhotos));
-
-        if(savedPhotos.length===0){
-
-            photos.innerHTML = "<p>No photos yet.</p>";
-
-        }
-
-    };
-
-    box.appendChild(img);
-
-    box.appendChild(delBtn);
-
-    photos.appendChild(box);
-
-}
-
-// Close Viewer
-
-document.getElementById("closeViewer").onclick = function(){
-
-    document.getElementById("viewer").style.display = "none";
-
-};
-
-document.getElementById("viewer").onclick = function(e){
-
-    if(e.target.id==="viewer"){
-
-        this.style.display="none";
-
-    }
-
-};
-
-</script>
- import {
+import {
 
 collection,
 
@@ -283,30 +278,39 @@ const photoInput = document.getElementById("photoInput");
 
 const photos = document.getElementById("photos");
 
+const viewer = document.getElementById("viewer");
+
+const viewerImg = document.getElementById("viewerImg");
+
+const closeViewer = document.getElementById("closeViewer");
+
 albumTitle.innerHTML = "📁 " + album;
 
-const photoCollection = collection(db, "albums", album, "photos");   
+const photoCollection = collection(db, "albums", album, "photos");
+
+// ===============================
+
+// Upload Photos
+
+// ===============================
+
 photoInput.addEventListener("change", async (e) => {
 
-    const files = e.target.files;
+    const files = [...e.target.files];
 
-    if (!files.length) return;
+    if (files.length === 0) return;
 
     for (const file of files) {
 
         try {
 
-            // Upload to Cloudinary
-
             const imageUrl = await uploadImage(file);
-
-            // Save in Firestore
 
             await addDoc(photoCollection, {
 
                 image: imageUrl,
 
-                createdAt: new Date()
+                createdAt: Date.now()
 
             });
 
@@ -314,15 +318,24 @@ photoInput.addEventListener("change", async (e) => {
 
             console.error(err);
 
-            alert("Photo upload failed!");
+            alert("Photo upload failed.");
 
         }
 
     }
 
-    loadPhotos();
+    await loadPhotos();
+
+    photoInput.value = "";
 
 });
+
+// ===============================
+
+// Load Photos
+
+// ===============================
+
 async function loadPhotos() {
 
     photos.innerHTML = "";
@@ -349,13 +362,15 @@ async function loadPhotos() {
 
         img.src = data.image;
 
-        img.onclick = function () {
+        img.onclick = () => {
 
-            document.getElementById("viewer").style.display = "flex";
+            viewer.style.display = "flex";
 
-            document.getElementById("viewerImg").src = data.image;
+            viewerImg.src = data.image;
 
         };
+
+  box.appendChild(img);
 
         const delBtn = document.createElement("button");
 
@@ -363,17 +378,19 @@ async function loadPhotos() {
 
         delBtn.innerHTML = "🗑 Delete";
 
-        delBtn.onclick = async function () {
+        delBtn.onclick = async () => {
 
             if (!confirm("Delete this photo?")) return;
 
-            await deleteDoc(doc(db, "albums", album, "photos", photoDoc.id));
+            await deleteDoc(
 
-            loadPhotos();
+                doc(db, "albums", album, "photos", photoDoc.id)
+
+            );
+
+            await loadPhotos();
 
         };
-
-        box.appendChild(img);
 
         box.appendChild(delBtn);
 
@@ -383,23 +400,31 @@ async function loadPhotos() {
 
 }
 
+// ===============================
 
+// First Load
 
-loadPhotos();
+// ===============================
 
-// Close Viewer
+await loadPhotos();
 
-document.getElementById("closeViewer").onclick = function () {
+// ===============================
 
-    document.getElementById("viewer").style.display = "none";
+// Viewer Close
+
+// ===============================
+
+closeViewer.onclick = () => {
+
+    viewer.style.display = "none";
 
 };
 
-document.getElementById("viewer").onclick = function (e) {
+viewer.onclick = (e) => {
 
-    if (e.target.id === "viewer") {
+    if (e.target === viewer) {
 
-        this.style.display = "none";
+        viewer.style.display = "none";
 
     }
 
@@ -409,4 +434,4 @@ document.getElementById("viewer").onclick = function (e) {
 
 </body>
 
-</html>    
+</html>                   
